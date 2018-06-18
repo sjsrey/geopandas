@@ -37,7 +37,7 @@ For the installation of GeoPandas, the following packages are required:
 - ``fiona``
 - ``pyproj``
 
-Further, ``descartes`` and ``matplotlib`` are optional dependencies, required
+Further, ``descartes``, ``mapclassify``, and ``matplotlib`` are optional dependencies, required
 for plotting, and [``rtree``](https://github.com/Toblerity/rtree) is an optional
 dependency, required for spatial joins. ``rtree`` requires the C library [``libspatialindex``](https://github.com/libspatialindex/libspatialindex). If using brew, you can install using ``brew install Spatialindex``.
 
