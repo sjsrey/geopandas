@@ -338,8 +338,8 @@ def plot_dataframe(df, column=None, cmap=None, color=None, ax=None,
     legend : bool (default False)
         Plot a legend. Ignored if no `column` is given, or if `color` is given.
     scheme : str (default None)
-        Name of a choropleth classification scheme (requires PySAL).
-        A pysal.esda.mapclassify.Map_Classifier object will be used
+        Name of a choropleth classification scheme (requires mapclassify).
+        A mapclassify.Map_Classifier object will be used
         under the hood. Supported schemes: 'Equal_interval', 'Quantiles',
         'Fisher_Jenks'
     k : int (default 5)
@@ -425,7 +425,7 @@ def plot_dataframe(df, column=None, cmap=None, color=None, ax=None,
     else:
         values = df[column]
     if scheme is not None:
-        binning = __pysal_choro(values, scheme, k=k)
+        binning = __mapclassify_choro(values, scheme, k=k)
         # set categorical to True for creating the legend
         categorical = True
         binedges = [values.min()] + binning.bins.tolist()
@@ -492,16 +492,16 @@ def plot_dataframe(df, column=None, cmap=None, color=None, ax=None,
     return ax
 
 
-def __pysal_choro(values, scheme, k=5):
+def __mapclassify_choro(values, scheme, k=5):
     """
-    Wrapper for choropleth schemes from PySAL for use with plot_dataframe
+    Wrapper for choropleth schemes from mapclassify for use with plot_dataframe
 
     Parameters
     ----------
     values
         Series to be plotted
     scheme : str
-        One of pysal.esda.mapclassify classification schemes
+        One of mapclassify classification schemes
         Options are 'Equal_interval', 'Quantiles', 'Fisher_Jenks'
     k : int
         number of classes (2 <= k <=9)
@@ -514,7 +514,7 @@ def __pysal_choro(values, scheme, k=5):
 
     """
     try:
-        from pysal.esda.mapclassify import (
+        from mapclassify import (
             Quantiles, Equal_Interval, Fisher_Jenks)
         schemes = {}
         schemes['equal_interval'] = Equal_Interval
@@ -527,4 +527,4 @@ def __pysal_choro(values, scheme, k=5):
         binning = schemes[scheme](values, k)
         return binning
     except ImportError:
-        raise ImportError("PySAL is required to use the 'scheme' keyword")
+        raise ImportError("mapclassify is required to use the 'scheme' keyword")
