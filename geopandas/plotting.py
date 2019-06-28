@@ -561,12 +561,33 @@ def _mapclassify_choro(values, scheme, **classification_kwds):
             "The 'mapclassify' package is required to use the 'scheme' "
             "keyword")
 
+    old_new = {}
+    old_new['box_plot'] = 'BoxPlot'
+    old_new['equal_interval'] = 'EqualInterval'
+    old_new['fisher_jenks'] = 'FisherJenks'
+    old_new['fisher_jenks_sampled'] = 'FisherJenksSampled'
+    old_new['headtail_breaks'] = 'HeadTailBreaks'
+    old_new['jenks_caspall'] = 'JenksCaspall'
+    old_new['jenks_caspall_forced'] = 'JenksCaspallForced'
+    old_new['jenks_caspall_sampled'] = 'JenksCaspallSampled'
+    old_new['max_p_classifier'] = 'MaxP'
+    old_new['maximum_breaks'] = 'MaximumBreaks'
+    old_new['natural_breaks'] = 'NaturalBreaks'
+    old_new['std_mean'] = 'StdMean'
+    old_new['user_defined'] = 'UserDefined'
+
     schemes = {}
     for classifier in mapclassify.classifiers.CLASSIFIERS:
         schemes[classifier.lower()] = getattr(mapclassify.classifiers,
                                               classifier)
 
     scheme = scheme.lower()
+    if scheme in old_new:
+        new_name = old_new[scheme]
+        schemes[scheme] = schemes[new_name.lower()]
+        msg = "{} is being deprecated. Use {}".format(scheme, new_name)
+        warnings.warn(msg, DeprecationWarning)
+
     if scheme not in schemes:
         raise ValueError("Invalid scheme. Scheme must be in the"
                          " set: %r" % schemes.keys())
