@@ -288,35 +288,52 @@ def plot_series(s, cmap=None, color=None, ax=None, figsize=None, **style_kwds):
     if not polys.empty:
         # color overrides both face and edgecolor. As we want people to be
         # able to use edgecolor as well, pass color to facecolor
-        facecolor = style_kwds.pop('facecolor', None)
+        facecolor = style_kwds.pop("facecolor", None)
         if color is not None:
             facecolor = color
         values_ = values[poly_idx] if cmap else None
-        plot_polygon_collection(ax, polys, values_, facecolor=facecolor,
-                                cmap=cmap, **style_kwds)
+        plot_polygon_collection(
+            ax, polys, values_, facecolor=facecolor, cmap=cmap, **style_kwds
+        )
 
     # plot all LineStrings and MultiLineString components in same collection
     lines = s.geometry[line_idx]
     if not lines.empty:
         values_ = values[line_idx] if cmap else None
-        plot_linestring_collection(ax, lines, values_, color=color, cmap=cmap,
-                                   **style_kwds)
+        plot_linestring_collection(
+            ax, lines, values_, color=color, cmap=cmap, **style_kwds
+        )
 
     # plot all Points in the same collection
     points = s.geometry[point_idx]
     if not points.empty:
         values_ = values[point_idx] if cmap else None
-        plot_point_collection(ax, points, values_, color=color, cmap=cmap,
-                              **style_kwds)
+        plot_point_collection(ax, points, values_, color=color, cmap=cmap, **style_kwds)
 
     plt.draw()
     return ax
 
 
-def plot_dataframe(df, column=None, cmap=None, color=None, ax=None, cax=None,
-                   categorical=False, legend=False, scheme=None, k=5,
-                   vmin=None, vmax=None, markersize=None, figsize=None,
-                   legend_kwds=None, classification_kwds=None, **style_kwds):
+def plot_dataframe(
+    df,
+    column=None,
+    cmap=None,
+    color=None,
+    ax=None,
+    cax=None,
+    categorical=False,
+    legend=False,
+    scheme=None,
+    k=5,
+    vmin=None,
+    vmax=None,
+    markersize=None,
+    figsize=None,
+    legend_kwds=None,
+    classification_kwds=None,
+    fmt="{:.2f}",
+    **style_kwds
+):
     """
     Plot a GeoDataFrame.
 
