@@ -450,39 +450,38 @@ def plot_dataframe(df, column=None, cmap=None, color=None, ax=None, cax=None,
     if scheme is not None:
         if classification_kwds is None:
             classification_kwds = {}
-        if 'k' not in classification_kwds:
-                classification_kwds['k'] = k
+        if "k" not in classification_kwds:
+            classification_kwds["k"] = k
 
         binning = _mapclassify_choro(values, scheme, **classification_kwds)
         # set categorical to True for creating the legend
         categorical = True
-        binedges = [values.min()] + binning.bins.tolist()
-        categories = ['{0:.2f} - {1:.2f}'.format(binedges[i], binedges[i+1])
-                      for i in range(len(binedges)-1)]
+        categories = binning.get_legend_classes(fmt)
         values = np.array(binning.yb)
 
     mn = values[~np.isnan(values)].min() if vmin is None else vmin
     mx = values[~np.isnan(values)].max() if vmax is None else vmax
 
     geom_types = df.geometry.type
-    poly_idx = np.asarray((geom_types == 'Polygon')
-                          | (geom_types == 'MultiPolygon'))
-    line_idx = np.asarray((geom_types == 'LineString')
-                          | (geom_types == 'MultiLineString'))
-    point_idx = np.asarray((geom_types == 'Point')
-                          | (geom_types == 'MultiPoint'))
+    poly_idx = np.asarray((geom_types == "Polygon") | (geom_types == "MultiPolygon"))
+    line_idx = np.asarray(
+        (geom_types == "LineString") | (geom_types == "MultiLineString")
+    )
+    point_idx = np.asarray((geom_types == "Point") | (geom_types == "MultiPoint"))
 
     # plot all Polygons and all MultiPolygon components in the same collection
     polys = df.geometry[poly_idx]
     if not polys.empty:
-        plot_polygon_collection(ax, polys, values[poly_idx],
-                                vmin=mn, vmax=mx, cmap=cmap, **style_kwds)
+        plot_polygon_collection(
+            ax, polys, values[poly_idx], vmin=mn, vmax=mx, cmap=cmap, **style_kwds
+        )
 
     # plot all LineStrings and MultiLineString components in same collection
     lines = df.geometry[line_idx]
     if not lines.empty:
-        plot_linestring_collection(ax, lines, values[line_idx],
-                                   vmin=mn, vmax=mx, cmap=cmap, **style_kwds)
+        plot_linestring_collection(
+            ax, lines, values[line_idx], vmin=mn, vmax=mx, cmap=cmap, **style_kwds
+        )
 
     if cax is not None:
         cbar_kwargs = {"cax": cax}
