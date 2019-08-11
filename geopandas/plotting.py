@@ -396,7 +396,9 @@ def plot_dataframe(
         Keyword arguments to pass to ax.legend()
     classification_kwds : dict (default None)
         Keyword arguments to pass to mapclassify
-
+    fmt: string (default '{:.2f}')
+        Formatting for choropleth legend when a mapclassify scheme is used.
+         
     **style_kwds : dict
         Color options to be passed on to the actual plot function, such
         as ``edgecolor``, ``facecolor``, ``linewidth``, ``markersize``,
